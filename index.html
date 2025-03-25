@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCTC - Twitch Minecraft Plugin</title>
     <style>
+        body {
+            transition: background 0.3s ease;
+        }
+        .keyword-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
         :root {
             --primary: #9147ff;
             --dark-bg: #0e0e10;
@@ -34,7 +41,7 @@
             border-bottom: 1px solid var(--accent);
             padding-bottom: 1rem;
         }
-        
+
         h1 {
             color: var(--primary);
             font-size: 2.5rem;
@@ -103,12 +110,77 @@
             <h1>MCTC Plugin</h1>
             <p class="subtitle">Twitch Chat steuert Minecraft Events</p>
         </header>
+
+        <div class="search-container">
+            <input type="text" id="keywordSearch" placeholder="Keyword suchen..." class="search-input">
+        </div>
+        
+        <style>
+        .search-container {
+            margin: 2rem 0;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--primary);
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 1rem;
+        }
+        </style>
+        
+        <script>
+        document.getElementById('keywordSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.keyword-card').forEach(card => {
+                const keyword = card.querySelector('.keyword-name').textContent.toLowerCase();
+                const desc = card.querySelector('.keyword-desc').textContent.toLowerCase();
+                card.style.display = (keyword.includes(searchTerm) || desc.includes(searchTerm)) 
+                    ? 'block' 
+                    : 'none';
+            });
+        });
+        </script>
         
         <div class="info-section">
             <h2>Über MCTC</h2>
-            <p>Ein von Alex entwickeltes Plugin, mit dem der Twitch Chat durch Keywords Events im Spiel auslösen kann. Schreibe die Keywords einfach im Chat und beobachte die Auswirkungen auf das Gameplay!</p>
+            <p>Ein von Alex entwickeltes Plugin, mit dem der Twitch Chat durch Keywords Events im Spiel auslösen kann. Schreibe ein Keyword in den Chat und schau dir Devoo's Reaktion darauf an!</p>
         </div>
         
+        <button id="themeToggle" class="theme-btn">Light Mode</button>
+
+        <style>
+        .theme-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 75px;
+            height: 75px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        </style>
+
+        <script>
+        const themeBtn = document.getElementById('themeToggle');
+        let isDark = true;
+
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            document.body.style.setProperty('--dark-bg', isDark ? '#0e0e10' : '#f7f7f8');
+            document.body.style.setProperty('--card-bg', isDark ? '#18181b' : '#ffffff');
+            document.body.style.setProperty('--text', isDark ? '#efeff1' : '#0e0e10');
+            themeBtn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        });
+        </script>
+
         <h2>Alle Keywords</h2>
         <div class="keywords-grid">
             <div class="keyword-card">
